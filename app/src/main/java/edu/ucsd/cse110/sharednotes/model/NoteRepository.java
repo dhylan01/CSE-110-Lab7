@@ -5,6 +5,8 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -47,7 +49,9 @@ public class NoteRepository {
 
         Observer<Note> updateFromRemote = theirNote -> {
             var ourNote = note.getValue();
-            if (ourNote == null || ourNote.updatedAt < theirNote.updatedAt) {
+            var our_updated_at = LocalDateTime.parse(ourNote.updatedAt).atZone(ZoneId.of("America/Los_Angeles")).toInstant().toEpochMilli();
+            var their_updated_at = LocalDateTime.parse(theirNote.updatedAt).atZone(ZoneId.of("America/Los_Angeles")).toInstant().toEpochMilli();
+            if (ourNote == null || our_updated_at < their_updated_at) {
                 upsertLocal(theirNote);
             }
         };
@@ -74,11 +78,10 @@ public class NoteRepository {
 
     public LiveData<List<Note>> getAllLocal() {
         return dao.getAll();
-
     }
 
     public void upsertLocal(Note note) {
-        note.updatedAt = System.currentTimeMillis();
+        note.updatedAt = LocalDateTime.now().toString();
         dao.upsert(note);
     }
 

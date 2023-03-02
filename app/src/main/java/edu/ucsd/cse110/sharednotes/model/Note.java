@@ -30,7 +30,7 @@ public class Note {
      * always preferred to a new empty note.
      */
     @SerializedName(value = "updated_at", alternate = "updatedAt")
-    public long updatedAt = 0;
+    public String updatedAt = "";
 
     /** General constructor for a note. */
     public Note(@NonNull String title, @NonNull String content) {
