@@ -137,9 +137,10 @@ public class ListActivity extends AppCompatActivity {
 
     private void setupInput(ListViewModel viewModel) {
         var input = (EditText) findViewById(R.id.input_new_note_title);
+
         input.setOnEditorActionListener((view, actionId, event) -> {
-            // If the event isn't "done" or "enter", do nothing.
             if (actionId != EditorInfo.IME_ACTION_DONE) {
+                // Log.d("title", "YOOOO");
                 return false;
             }
 
