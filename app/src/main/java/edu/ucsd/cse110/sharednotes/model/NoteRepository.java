@@ -100,7 +100,6 @@ public class NoteRepository {
         if (clockFuture != null) {
             clockFuture.cancel(true);
         }
-        Note note = api.get(title);
         if (note != null) {
             upsertSynced(note);
         }
